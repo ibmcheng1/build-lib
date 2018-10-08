@@ -1,5 +1,5 @@
 #!/usr/bin/env groovy
-package com.bcbssc.itbsa.jenkins
+package com.ibm.samples.jenkins
 
 class GlobalVars {
     //static String jenkinsMaven = "Maven3.5.4"
