@@ -40,8 +40,7 @@ def call(body) {
             deleteDir()
 
             try {
-			  echo "Everything you see between now and the LIBRARY END message is controlled by a library rather than the main Jenkinsfile."
-			  echo "Lasciate ogni speranza, voi ch'intrate"
+			  echo "+++++ LIBRARY START +++++"
 
 			  if(env.GIT_BRANCH != 'master') {
 				echo "This branch is ineligible for production."
@@ -75,7 +74,7 @@ def call(body) {
 				   echo "Stage-gradle: build ..."
 				   pwd
 				   chmod +x gradlew
-				   ./gradlew clean build test
+				   ./gradlew clean build test --refresh-dependencies
 				   '''
 				 }
 			   }
