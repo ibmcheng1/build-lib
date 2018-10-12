@@ -40,7 +40,13 @@ def call(body) {
             deleteDir()
 
             try {
-				
+			  echo "Everything you see between now and the LIBRARY END message is controlled by a library rather than the main Jenkinsfile."
+			  echo "Lasciate ogni speranza, voi ch'intrate"
+
+			  if(env.GIT_BRANCH != 'master') {
+				echo "This branch is ineligible for production."
+			  }
+			  				
 			  stage('build-ext-01') {
 					git branch: 'master',
 					   credentialsId: '6e1534b2-15e4-49f7-8735-f41c44334547',
@@ -134,7 +140,9 @@ def call(body) {
 					cat kube-artifacts/kube.deploy.yaml
 				   """
 				   
-				   //ucdDeploy(gitCommit, UCD_Env, true, APPLICATION_NAME, COMPONENT_NAME, DEPLOY_PROCESS)
+				   ucdDeploy(gitCommit, UCD_Env, true, APPLICATION_NAME, COMPONENT_NAME, DEPLOY_PROCESS)
+				   
+				   echo "+++++ LIBRARY END +++++"
 			   }
 				
 				
