@@ -4,13 +4,15 @@ def call(body) {
     body.resolveStrategy = Closure.DELEGATE_FIRST
     body.delegate = config
 
-	//def APPLICATION_NAME = "TradeBookTest"
-	//def COMPONENT_NAME = "tb-schema-validation-test"
-	//def DEPLOY_PROCESS = "Deploy-${COMPONENT_NAME}"
-	//def UCD_Env = "Dev"
-	//def HELM_CHART_TEMPLATE = "component-chart-template-1.0.0"
-	//def KUBE_DEPLOYMENT_TEMPLATE = "kube-artifacts-1.0.0"
-	//def kubeNamespace = "default"
+	def COMMON_PIPELINE_01_VERSION = "10-15-2018"
+	
+	def APPLICATION_NAME = "TradeBookTest"
+	def COMPONENT_NAME = "tb-schema-validation-test"
+	def DEPLOY_PROCESS = "Deploy-${COMPONENT_NAME}"
+	def UCD_Env = "Dev"
+	def HELM_CHART_TEMPLATE = "component-chart-template-1.0.0"
+	def KUBE_DEPLOYMENT_TEMPLATE = "kube-artifacts-1.0.0"
+	def kubeNamespace = "default"
 	
 	def kubeDeploymentName = COMPONENT_NAME	
 	def imageNameSpace = kubeNamespace
@@ -42,8 +44,8 @@ def call(body) {
 
             try {
 			  echo "+++++ LIBRARY START +++++"
-			  echo "CommonPipeline01 - 10152018"
-
+			  echo "CommonPipeline01 - " + COMMON_PIPELINE_01_VERSION
+			  
 			  if(env.GIT_BRANCH != 'master') {
 				echo "This branch is ineligible for production."
 			  }
@@ -141,7 +143,7 @@ def call(body) {
 					cat kube-artifacts/kube.deploy.yaml
 				   """
 				   
-				   ucdDeploy(gitCommit, UCD_Env, true, APPLICATION_NAME, COMPONENT_NAME, DEPLOY_PROCESS)
+				   //ucdDeploy(gitCommit, UCD_Env, true, APPLICATION_NAME, COMPONENT_NAME, DEPLOY_PROCESS)
 				   
 				   echo "+++++ LIBRARY END +++++"
 			   }
