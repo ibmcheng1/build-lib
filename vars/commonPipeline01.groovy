@@ -3,6 +3,7 @@ def call(body) {
     def config = [:]
     body.resolveStrategy = Closure.DELEGATE_FIRST
     body.delegate = config
+	body()
 
 	def COMMON_PIPELINE_01_VERSION = "10-15-2018"
 	
@@ -34,17 +35,6 @@ def call(body) {
 	    ],
 	    volumes: volumes
 	) {
-
-        body()
-		
-		APPLICATION_NAME = config.applicationName
-		COMPONENT_NAME = config.componentName
-		DEPLOY_PROCESS = "Deploy-${COMPONENT_NAME}"
-		UCD_Env = config.ucdEnv
-		HELM_CHART_TEMPLATE = config.helmChartTemplate
-		KUBE_DEPLOYMENT_TEMPLATE = config.kubeDeploymentTemplate
-		kubeNamespace = config.kubeNamespaceForDeployment
-	
 
         node (label) {
         
