@@ -36,6 +36,15 @@ def call(body) {
 	) {
 
         body()
+		
+		APPLICATION_NAME = config.applicationName
+		COMPONENT_NAME = config.componentName
+		DEPLOY_PROCESS = "Deploy-${COMPONENT_NAME}"
+		UCD_Env = config.ucdEnv
+		HELM_CHART_TEMPLATE = config.helmChartTemplate
+		KUBE_DEPLOYMENT_TEMPLATE = config.kubeDeploymentTemplate
+		kubeNamespace = config.kubeNamespaceForDeployment
+	
 
         node (label) {
         
