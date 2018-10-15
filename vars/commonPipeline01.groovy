@@ -6,23 +6,22 @@ def call(body) {
 
 	def COMMON_PIPELINE_01_VERSION = "10-15-2018"
 	
-	def APPLICATION_NAME
-	def COMPONENT_NAME
-	def DEPLOY_PROCESS
-	def UCD_Env
-	def HELM_CHART_TEMPLATE
-	def KUBE_DEPLOYMENT_TEMPLATE
-	def kubeNamespace
+	def APPLICATION_NAME = config.applicationName
+	def COMPONENT_NAME = config.componentName
+	def DEPLOY_PROCESS = "Deploy-${COMPONENT_NAME}"
+	def UCD_Env = config.ucdEnv
+	def HELM_CHART_TEMPLATE = config.helmChartTemplate
+	def KUBE_DEPLOYMENT_TEMPLATE = config.kubeDeploymentTemplate
+	def kubeNamespace = config.kubeNamespaceForDeployment
 	
-	def kubeDeploymentName	
-	def imageNameSpace
-	def helmChartName
-	def containerName
-	def imageName
+	def kubeDeploymentName = COMPONENT_NAME	
+	def imageNameSpace = kubeNamespace
+	def helmChartName = kubeDeploymentName
+	def containerName = kubeDeploymentName
+	def imageName = kubeDeploymentName
 	def imageTag
 	def gitCommit
-	def label = "${UUID.randomUUID().toString()}"
-	
+	def label = "${kubeDeploymentName}-${UUID.randomUUID().toString()}"
 	def volumes = [ hostPathVolume(hostPath: '/var/run/docker.sock', mountPath: '/var/run/docker.sock'), 
 				 	hostPathVolume(hostPath: '/tmp', mountPath: '/home/gradle/.gradle') ]			 	
 	volumes += secretVolume(secretName: 'jenkins-docker-sec', mountPath: '/jenkins_docker_sec')
@@ -45,25 +44,7 @@ def call(body) {
 
             try {
 			  echo "+++++ LIBRARY START +++++"
-			  echo "CommonPipeline01 - " + COMMON_PIPELINE_01_VERSION
-			  
-			  APPLICATION_NAME = ${config.applicationName}
-			  COMPONENT_NAME = ${config.componentName}
-			  DEPLOY_PROCESS = "Deploy-${COMPONENT_NAME}"
-			  UCD_Env = ${config.ucdEnv}
-			  HELM_CHART_TEMPLATE = ${config.helmChartTemplate}
-			  KUBE_DEPLOYMENT_TEMPLATE = ${config.kubeDeploymentTemplate}
-			  kubeNamespace = ${config.kubeNamespaceForDeployment}
-			  
-			  kubeDeploymentName = COMPONENT_NAME
-			  imageNameSpace = kubeNamespace
-			  helmChartName = kubeDeploymentName
-			  containerName = kubeDeploymentName
-			  imageName = kubeDeploymentName
-			  imageTag
-			  gitCommit
-			  label = kubeDeploymentName + "-" + label
-		  			  
+			  echo "CommonPipeline01 - " + COMMON_PIPELINE_01_VERSION			  
 			  echo "    APPLICATION_NAME - " + APPLICATION_NAME
 			  echo "    COMPONENT_NAME - " + COMPONENT_NAME
 			  echo "    DEPLOY_PROCESS - " + DEPLOY_PROCESS
