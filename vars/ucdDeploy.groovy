@@ -1,7 +1,7 @@
 import com.ibm.samples.jenkins.GlobalVars
 
 def call(String commitId, String deploymentEnvironment, Boolean pushArtifact, String applicationName, String componentName, String deployProcess) {
-
+	echo "ucdDeploy ..."
     try {
 
         // TODO: Refactor out all these variables to make parameters so that this

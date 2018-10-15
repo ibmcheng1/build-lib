@@ -107,7 +107,7 @@ def call(body) {
 				   """
 			   }
 									
-			   stage ('UCD') {
+			   stage ('Deploy') {
 				   def fullImageTag = imageTag
 				   imageTag = gitCommit
 				   echo "fullImageTag = ${fullImageTag}"
@@ -141,7 +141,9 @@ def call(body) {
 					cat kube-artifacts/kube.deploy.yaml
 				   """
 				   
-				   ucdDeploy(gitCommit, UCD_Env, true, APPLICATION_NAME, COMPONENT_NAME, DEPLOY_PROCESS)
+				   kubeDeploy(fullImageTag, imageTag, kubeDeploymentName, kubeNamespace, containerName, false)
+				   
+				   //ucdDeploy(gitCommit, UCD_Env, true, APPLICATION_NAME, COMPONENT_NAME, DEPLOY_PROCESS)
 				   
 				   echo "+++++ LIBRARY END +++++"
 			   }
