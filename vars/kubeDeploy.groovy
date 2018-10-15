@@ -1,6 +1,6 @@
 import com.ibm.samples.jenkins.GlobalVars
 
-def call(String fullImageTag, String imageName, String imageTag, String kubeDeploymentName, String kubeNamespace, String containerName, Boolean recycleDeployment) {
+def call(String fullImageTag, String imageName, String imageTag, String kubeDeploymentName, String kubeNamespace, String containerName, String configMapTruststore, String configMapAppProperties, Boolean recycleDeployment) {
 	echo "KubeDeploy ..."
 	try {
           container('kubectl') {
@@ -15,6 +15,8 @@ def call(String fullImageTag, String imageName, String imageTag, String kubeDepl
 			echo "kubeDeploymentName = ${kubeDeploymentName}"
 			echo "kubeNamespace = ${kubeNamespace}"
 			echo "containerName = ${containerName}"
+			echo "configMapTruststore = ${configMapTruststore}"
+			echo "configMapAppProperties = ${configMapAppProperties}"
 			echo "recycleDeployment = ${recycleDeployment}"
             sh """
             #!/bin/bash
@@ -29,10 +31,13 @@ def call(String fullImageTag, String imageName, String imageTag, String kubeDepl
                 sed -i "s/<KUBE_TOKEN_04>/${kubeDeploymentName}/g" kube-artifacts/kube.deploy.yaml            
                 sed -i "s/<CONTAINER_NAME>/${containerName}/g" kube-artifacts/kube.deploy.yaml
                 sed -i "s/<DOCKER_IMAGE>/${imageName}:${imageTag}/g" kube-artifacts/kube.deploy.yaml
+                sed -i "s/<CONFIGMAP_TRUSTSTORE>/${configMapTruststore}/g" kube-artifacts/kube.deploy.yaml            
+                sed -i "s/<CONFIGMAP_APP_PROPERTIES>/${configMapAppProperties}/g" kube-artifacts/kube.deploy.yaml            
+
                 cat kube-artifacts/kube.deploy.yaml
+                echo "Create ConfigMap ... TODO"
                 echo "Create deployment"
                 kubectl apply -f kube-artifacts/kube.deploy.yaml --namespace ${kubeNamespace}
-                echo "Create service"
             fi
             echo "Describe deployment"
             kubectl describe deployment ${kubeDeploymentName} --namespace ${kubeNamespace}

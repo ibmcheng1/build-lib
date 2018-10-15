@@ -8,6 +8,8 @@ def call(body) {
 	def COMMON_PIPELINE_01_VERSION = "10-15-2018"
 	def DEPLOYMENT_METHOD = config.deploymentMethod
 	def GIT_CREDENTIALS_ID = config.gitCredentialsId
+	def KUBE_CONFIGMAP_TRUSTSTORE = config.kube_configMapRef_truststore
+	def KUBE_CONFIGMAP_APP_PROPERTIES = config.kube_configMapRef_app_properties
 	
 	def APPLICATION_NAME = config.applicationName
 	def COMPONENT_NAME = config.componentName
@@ -145,16 +147,13 @@ def call(body) {
 				   
 				   if (DEPLOYMENT_METHOD == 'kube') {
 					   echo 'User configured to deploy via Kubectl'
+					   kubeDeploy(fullImageTag, imageName, imageTag, kubeDeploymentName, kubeNamespace, containerName, KUBE_CONFIGMAP_TRUSTSTORE, KUBE_CONFIGMAP_APP_PROPERTIES, false)				 
 				   } else if (DEPLOYMENT_METHOD == 'helm') {
 					   echo 'User configured to deploy via helm. Not Supported.'
 				   } else {
 					   echo 'default to UCD deployment'
+					   ucdDeploy(gitCommit, UCD_Env, true, APPLICATION_NAME, COMPONENT_NAME, DEPLOY_PROCESS)					   
 				   }
-				   
-				   kubeDeploy(fullImageTag, imageName, imageTag, kubeDeploymentName, kubeNamespace, containerName, false)
-				   
-				   //ucdDeploy(gitCommit, UCD_Env, true, APPLICATION_NAME, COMPONENT_NAME, DEPLOY_PROCESS)
-				   
 				   echo "+++++ LIBRARY END +++++"
 			   }
 				
