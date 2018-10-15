@@ -6,6 +6,7 @@ def call(body) {
 	body()
 
 	def COMMON_PIPELINE_01_VERSION = "10-15-2018"
+	def DEPLOYMENT_METHOD = config.deploymentMethod
 	
 	def APPLICATION_NAME = config.applicationName
 	def COMPONENT_NAME = config.componentName
@@ -42,7 +43,7 @@ def call(body) {
 
             try {
 			  echo "+++++ LIBRARY START +++++ CommonPipeline01: " + COMMON_PIPELINE_01_VERSION
-			  echo "APPLICATION_NAME=" + APPLICATION_NAME + ", COMPONENT_NAME=" + COMPONENT_NAME + ", DEPLOY_PROCESS=" + DEPLOY_PROCESS + ", UCD_Env=" + UCD_Env + ", HELM_CHART_TEMPLATE=" + HELM_CHART_TEMPLATE + ", KUBE_DEPLOYMENT_TEMPLATE=" + KUBE_DEPLOYMENT_TEMPLATE + ", kubeNamespace=" + kubeNamespace
+			  echo "APPLICATION_NAME=" + APPLICATION_NAME + ", COMPONENT_NAME=" + COMPONENT_NAME + ", DEPLOY_PROCESS=" + DEPLOY_PROCESS + ", UCD_Env=" + UCD_Env + ", HELM_CHART_TEMPLATE=" + HELM_CHART_TEMPLATE + ", KUBE_DEPLOYMENT_TEMPLATE=" + KUBE_DEPLOYMENT_TEMPLATE + ", kubeNamespace=" + kubeNamespace  ", DEPLOY_BY_KUBE=" + DEPLOY_BY_KUBE
 			  
 			  //if(env.GIT_BRANCH != 'master') {
 			  //	echo "This branch is ineligible for production."
@@ -140,6 +141,14 @@ def call(body) {
 					ls -l kube-artifacts
 					cat kube-artifacts/kube.deploy.yaml
 				   """
+				   
+				   if (DEPLOYMENT_METHOD == 'kube') {
+					   echo 'User configured to deploy via Kubectl'
+				   } else if (DEPLOYMENT_METHOD == 'helm') {
+					   echo 'User configured to deploy via helm. Not Supported.'
+				   } else {
+					   echo 'default to UCD deployment'
+				   }
 				   
 				   kubeDeploy(fullImageTag, imageTag, kubeDeploymentName, kubeNamespace, containerName, false)
 				   
