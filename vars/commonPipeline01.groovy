@@ -4,14 +4,15 @@ def call(body) {
     body.resolveStrategy = Closure.DELEGATE_FIRST
     body.delegate = config
 
-	def APPLICATION_NAME = "TradeBookTest"
-	def COMPONENT_NAME = "tb-schema-validation-test"
-	def DEPLOY_PROCESS = "Deploy-${COMPONENT_NAME}"
-	def UCD_Env = "Dev"
-	def HELM_CHART_TEMPLATE = "component-chart-template-1.0.0"
-	def KUBE_DEPLOYMENT_TEMPLATE = "kube-artifacts-1.0.0"
-	def kubeDeploymentName = COMPONENT_NAME
-	def kubeNamespace = "default"
+	//def APPLICATION_NAME = "TradeBookTest"
+	//def COMPONENT_NAME = "tb-schema-validation-test"
+	//def DEPLOY_PROCESS = "Deploy-${COMPONENT_NAME}"
+	//def UCD_Env = "Dev"
+	//def HELM_CHART_TEMPLATE = "component-chart-template-1.0.0"
+	//def KUBE_DEPLOYMENT_TEMPLATE = "kube-artifacts-1.0.0"
+	//def kubeNamespace = "default"
+	
+	def kubeDeploymentName = COMPONENT_NAME	
 	def imageNameSpace = kubeNamespace
 	def helmChartName = kubeDeploymentName
 	def containerName = kubeDeploymentName
@@ -41,6 +42,7 @@ def call(body) {
 
             try {
 			  echo "+++++ LIBRARY START +++++"
+			  echo "CommonPipeline01 - 10152018"
 
 			  if(env.GIT_BRANCH != 'master') {
 				echo "This branch is ineligible for production."
