@@ -42,13 +42,7 @@ def call(body) {
 
             try {
 			  echo "+++++ LIBRARY START +++++ CommonPipeline01: " + COMMON_PIPELINE_01_VERSION
-			  echo "APPLICATION_NAME=" + APPLICATION_NAME 
-			  			  + ", COMPONENT_NAME=" + COMPONENT_NAME
-						  + ", DEPLOY_PROCESS=" + DEPLOY_PROCESS
-						  + ", UCD_Env=" + UCD_Env
-						  + ", HELM_CHART_TEMPLATE=" + HELM_CHART_TEMPLATE
-						  + ", KUBE_DEPLOYMENT_TEMPLATE=" + KUBE_DEPLOYMENT_TEMPLATE
-						  + ", kubeNamespace=" + kubeNamespace
+			  echo "APPLICATION_NAME=" + APPLICATION_NAME + ", COMPONENT_NAME=" + COMPONENT_NAME + ", DEPLOY_PROCESS=" + DEPLOY_PROCESS + ", UCD_Env=" + UCD_Env + ", HELM_CHART_TEMPLATE=" + HELM_CHART_TEMPLATE + ", KUBE_DEPLOYMENT_TEMPLATE=" + KUBE_DEPLOYMENT_TEMPLATE + ", kubeNamespace=" + kubeNamespace
 			  
 			  if(env.GIT_BRANCH != 'master') {
 				echo "This branch is ineligible for production."
