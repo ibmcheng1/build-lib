@@ -13,8 +13,7 @@ def call(body) {
 	def UCD_Env = config.ucdEnv
 	def HELM_CHART_TEMPLATE = config.helmChartTemplate
 	def KUBE_DEPLOYMENT_TEMPLATE = config.kubeDeploymentTemplate
-	def kubeNamespace = config.kubeNamespaceForDeployment
-	
+	def kubeNamespace = config.kubeNamespaceForDeployment	
 	def kubeDeploymentName = COMPONENT_NAME	
 	def imageNameSpace = kubeNamespace
 	def helmChartName = kubeDeploymentName
@@ -42,15 +41,14 @@ def call(body) {
             deleteDir()
 
             try {
-			  echo "+++++ LIBRARY START +++++"
-			  echo "CommonPipeline01 - " + COMMON_PIPELINE_01_VERSION			  
-			  echo "    APPLICATION_NAME - " + APPLICATION_NAME
-			  echo "    COMPONENT_NAME - " + COMPONENT_NAME
-			  echo "    DEPLOY_PROCESS - " + DEPLOY_PROCESS
-			  echo "    UCD_Env - " + UCD_Env
-			  echo "    HELM_CHART_TEMPLATE - " + HELM_CHART_TEMPLATE
-			  echo "    KUBE_DEPLOYMENT_TEMPLATE - " + KUBE_DEPLOYMENT_TEMPLATE
-			  echo "    kubeNamespace - " + kubeNamespace
+			  echo "+++++ LIBRARY START +++++ CommonPipeline01: " + COMMON_PIPELINE_01_VERSION
+			  echo "APPLICATION_NAME=" + APPLICATION_NAME 
+			  			  + ", COMPONENT_NAME=" + COMPONENT_NAME
+						  + ", DEPLOY_PROCESS=" + DEPLOY_PROCESS
+						  + ", UCD_Env=" + UCD_Env
+						  + ", HELM_CHART_TEMPLATE=" + HELM_CHART_TEMPLATE
+						  + ", KUBE_DEPLOYMENT_TEMPLATE=" + KUBE_DEPLOYMENT_TEMPLATE
+						  + ", kubeNamespace=" + kubeNamespace
 			  
 			  if(env.GIT_BRANCH != 'master') {
 				echo "This branch is ineligible for production."
