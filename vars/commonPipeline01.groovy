@@ -150,7 +150,7 @@ def call(body) {
 					   echo 'default to UCD deployment'
 				   }
 				   
-				   kubeDeploy(fullImageTag, imageTag, kubeDeploymentName, kubeNamespace, containerName, false)
+				   kubeDeploy(fullImageTag, imageName, imageTag, kubeDeploymentName, kubeNamespace, containerName, false)
 				   
 				   //ucdDeploy(gitCommit, UCD_Env, true, APPLICATION_NAME, COMPONENT_NAME, DEPLOY_PROCESS)
 				   
