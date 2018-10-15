@@ -6,13 +6,13 @@ def call(body) {
 
 	def COMMON_PIPELINE_01_VERSION = "10-15-2018"
 	
-	def APPLICATION_NAME = "TradeBookTest"
-	def COMPONENT_NAME = "tb-schema-validation-test"
+	def APPLICATION_NAME = config.applicationName
+	def COMPONENT_NAME = config.componentName
 	def DEPLOY_PROCESS = "Deploy-${COMPONENT_NAME}"
-	def UCD_Env = "Dev"
-	def HELM_CHART_TEMPLATE = "component-chart-template-1.0.0"
-	def KUBE_DEPLOYMENT_TEMPLATE = "kube-artifacts-1.0.0"
-	def kubeNamespace = "default"
+	def UCD_Env = config.ucdEnv
+	def HELM_CHART_TEMPLATE = config.helmChartTemplate
+	def KUBE_DEPLOYMENT_TEMPLATE = config.kubeDeploymentTemplate
+	def kubeNamespace = config.kubeNamespaceForDeployment
 	
 	def kubeDeploymentName = COMPONENT_NAME	
 	def imageNameSpace = kubeNamespace
