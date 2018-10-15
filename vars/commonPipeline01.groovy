@@ -7,6 +7,7 @@ def call(body) {
 
 	def COMMON_PIPELINE_01_VERSION = "10-15-2018"
 	def DEPLOYMENT_METHOD = config.deploymentMethod
+	def GIT_CREDENTIALS_ID = config.gitCredentialsId
 	
 	def APPLICATION_NAME = config.applicationName
 	def COMPONENT_NAME = config.componentName
@@ -51,7 +52,7 @@ def call(body) {
 			  				
 			  stage('build-ext-01') {
 					git branch: 'master',
-					   credentialsId: '6e1534b2-15e4-49f7-8735-f41c44334547',
+					   credentialsId: GIT_CREDENTIALS_ID,
 					   url: 'git@github.ibm.com:MICROSERVICES-STT/tradebook-build-ext.git'
 					sh """
 		        	pwd
