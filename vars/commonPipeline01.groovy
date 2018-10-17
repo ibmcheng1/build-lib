@@ -140,9 +140,10 @@ def call(body) {
 				   sed -i "s/<CONFIGMAP_APP_PROPERTIES>/${KUBE_CONFIGMAP_APP_PROPERTIES}/g" chart/${COMPONENT_NAME}/values.yaml
 				   sed -i "s/<SECRET_TRUSTSTORE>/${KUBE_SECRET_TRUSTSTORE}/g" chart/${COMPONENT_NAME}/values.yaml
 				   cat chart/${COMPONENT_NAME}/Chart.yaml
+				   echo ""
 				   cat chart/${COMPONENT_NAME}/values.yaml
-				   
-				   cp -r kube-deployment/${KUBE_DEPLOYMENT_TEMPLATE} .
+				   echo ""
+				   cp -rf kube-deployment/${KUBE_DEPLOYMENT_TEMPLATE} .
 				   mv ${KUBE_DEPLOYMENT_TEMPLATE} kube-artifacts
 				   ls -l .
 				   ls -l kube-artifacts
