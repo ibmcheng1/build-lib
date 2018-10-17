@@ -25,12 +25,6 @@ def call(String deploymentEnvironment, Boolean pushArtifact, String applicationN
         #!/bin/bash
         pwd
         ls -l
-        #echo "imageNamespace: ${imageNamespace}"
-		#echo "imageName: ${imageName}"
-		#echo "imageTag: ${imageTag}"
-		#echo "configmapTruststore: ${configmapTruststore}"
-		#echo "configmapAppProperties: ${configmapAppProperties}"
-		#echo "secretTruststore: ${secretTruststore}"
         echo "BUILD_NUMBER: ${BUILD_NUMBER}"
         echo "WORKSPACE: ${WORKSPACE}"
         echo "UCD_APP_NAME = ${UCD_APP_NAME}"
@@ -43,21 +37,7 @@ def call(String deploymentEnvironment, Boolean pushArtifact, String applicationN
         echo "TARGET_FILE = ${TARGET_FILE}"
         echo "-------------------------"
         echo "Verify target file: ${TARGET_FILE}"
-        ls -l ${TARGET_FILE} 
-          				
-        #echo "update TAG before: "
-        #cat ${TARGET_FILE} | grep tag:						          		
-        #sed -i "s|@@@TAG@@@|${imageTag}|g" ${TARGET_FILE}
-
-		#sed -i "s|${IMAGE_NAMESPACE_OLD_String}|${imageNamespace}|g" ${TARGET_FILE}
-		#sed -i "s|${MAGE_NAME_OLD_String}|${imageName}|g" ${TARGET_FILE}
-		#sed -i "s|${IMAGE_TAG_OLD_String}|${imageTag}|g" ${TARGET_FILE}
-		#sed -i "s|${CONFIGMAP_TRUSTSTORE_OLD_String}|${configmapTruststore}|g" ${TARGET_FILE}
-		#sed -i "s|${CONFIGMAP_APP_PROPERTIES_OLD_String}|${configmapAppProperties}|g" ${TARGET_FILE}
-		#sed -i "s|${SECRET_TRUSTSTORE_OLD_String}|${secretTruststore}|g" ${TARGET_FILE}
-	          		
-        #echo "After update ${TARGET_FILE} ... "
-        #cat ${TARGET_FILE}	          			        	    		        	    	
+        ls -l ${TARGET_FILE}           				
         """
 
         if (pushArtifact) {
