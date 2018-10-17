@@ -81,7 +81,7 @@ def call(body) {
 				   echo "Stage-gradle: build ..."
 				   pwd
 				   chmod +x gradlew
-				   ./gradlew clean build test
+				   ./gradlew clean build test --refresh-dependencies
 				   '''
 				 }
 			   }
