@@ -1,21 +1,12 @@
 import com.ibm.samples.jenkins.GlobalVars
 
-def call(String commitId, String deploymentEnvironment, Boolean pushArtifact, String applicationName, String componentName, String deployProcess) {
+def call(String deploymentEnvironment, Boolean pushArtifact, String applicationName, String componentName, String deployProcess) {
 	echo "ucdDeploy ..."
     try {
-
-        // TODO: Refactor out all these variables to make parameters so that this
-        // groovy script can be used for all ucd deployments!
-
-        def imageTag = "";
-        def IMAGE_TAG
-        def TAG_NEW_String
-
         def OFFSET_DIR="chart/" + componentName
         def TARGET_FILE="values.yaml"
         def BUILD_PROPERTIES_FILE="build.properties"
-        def TAG_OLD_String="@@@TAG@@@"
-      
+		     
         def UCD_APP_NAME = applicationName
         def UCD_COMPONENT_NAME = componentName 
         def UCD_COMPONENT_TEMPLATE = "HelmChartTemplate"
@@ -24,10 +15,6 @@ def call(String commitId, String deploymentEnvironment, Boolean pushArtifact, St
         def UCD_Deploy_Env = deploymentEnvironment
         def UCD_Deploy_Process = deployProcess
         def UCD_Deploy_Version = null   
-
-        imageTag = commitId
-        IMAGE_TAG = commitId
-        TAG_NEW_String=commitId
             
         UCD_DELIVERY_BASE_DIR = WORKSPACE + "/" + OFFSET_DIR
         UCD_DELIVERY_PUSH_VERSION = BRANCH_NAME + "." + BUILD_NUMBER
@@ -38,7 +25,12 @@ def call(String commitId, String deploymentEnvironment, Boolean pushArtifact, St
         #!/bin/bash
         pwd
         ls -l
-        echo "imageTag: ${imageTag}"
+        #echo "imageNamespace: ${imageNamespace}"
+		#echo "imageName: ${imageName}"
+		#echo "imageTag: ${imageTag}"
+		#echo "configmapTruststore: ${configmapTruststore}"
+		#echo "configmapAppProperties: ${configmapAppProperties}"
+		#echo "secretTruststore: ${secretTruststore}"
         echo "BUILD_NUMBER: ${BUILD_NUMBER}"
         echo "WORKSPACE: ${WORKSPACE}"
         echo "UCD_APP_NAME = ${UCD_APP_NAME}"
@@ -51,12 +43,21 @@ def call(String commitId, String deploymentEnvironment, Boolean pushArtifact, St
         echo "TARGET_FILE = ${TARGET_FILE}"
         echo "-------------------------"
         echo "Verify target file: ${TARGET_FILE}"
-        ls -l ${TARGET_FILE}           				
-        echo "update TAG before: "
-        cat ${TARGET_FILE} | grep tag:						          		
-        sed -i "s|@@@TAG@@@|${imageTag}|g" ${TARGET_FILE}	          		
-        echo "update TAG before: "
-        cat ${TARGET_FILE} | grep tag:	          			        	    		        	    	
+        ls -l ${TARGET_FILE} 
+          				
+        #echo "update TAG before: "
+        #cat ${TARGET_FILE} | grep tag:						          		
+        #sed -i "s|@@@TAG@@@|${imageTag}|g" ${TARGET_FILE}
+
+		#sed -i "s|${IMAGE_NAMESPACE_OLD_String}|${imageNamespace}|g" ${TARGET_FILE}
+		#sed -i "s|${MAGE_NAME_OLD_String}|${imageName}|g" ${TARGET_FILE}
+		#sed -i "s|${IMAGE_TAG_OLD_String}|${imageTag}|g" ${TARGET_FILE}
+		#sed -i "s|${CONFIGMAP_TRUSTSTORE_OLD_String}|${configmapTruststore}|g" ${TARGET_FILE}
+		#sed -i "s|${CONFIGMAP_APP_PROPERTIES_OLD_String}|${configmapAppProperties}|g" ${TARGET_FILE}
+		#sed -i "s|${SECRET_TRUSTSTORE_OLD_String}|${secretTruststore}|g" ${TARGET_FILE}
+	          		
+        #echo "After update ${TARGET_FILE} ... "
+        #cat ${TARGET_FILE}	          			        	    		        	    	
         """
 
         if (pushArtifact) {

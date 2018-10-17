@@ -5,7 +5,7 @@ def call(body) {
     body.delegate = config
 	body()
 
-	def COMMON_PIPELINE_01_VERSION = "10-15-2018"
+	def COMMON_PIPELINE_01_VERSION = "10-16-2018"
 	def DEPLOYMENT_METHOD = config.deploymentMethod
 	def GIT_CREDENTIALS_ID = config.gitCredentialsId
 	def KUBE_CONFIGMAP_TRUSTSTORE = config.kube_configMapRef_truststore
@@ -20,7 +20,7 @@ def call(body) {
 	def KUBE_DEPLOYMENT_TEMPLATE = config.kubeDeploymentTemplate
 	def kubeNamespace = config.kubeNamespaceForDeployment	
 	def kubeDeploymentName = COMPONENT_NAME	
-	def imageNameSpace = kubeNamespace
+	def imageNamespace = kubeNamespace
 	def helmChartName = kubeDeploymentName
 	def containerName = kubeDeploymentName
 	def imageName = kubeDeploymentName
@@ -103,7 +103,7 @@ def call(body) {
 			   }
 			   
 			   stage('build-ext-02') {
-					sh """
+				   sh """
 				   pwd
 				   ls -lat
 				   ls -lat ../tmp/
@@ -118,7 +118,7 @@ def call(body) {
 				   echo "fullImageTag = ${fullImageTag}"
 				   echo "imageTag = ${imageTag}"
 				   echo "helmChartName = ${helmChartName}"
-				   echo "imageNameSpace = ${imageNameSpace}"
+				   echo "imageNamespace = ${imageNamespace}"
 				   echo "imageName = ${imageName}"
 				   
 				   echo "COMPONENT_NAME = ${COMPONENT_NAME}"
@@ -128,22 +128,25 @@ def call(body) {
 				   sh """
 				   #!/bin/bash
 				   pwd
-					ls -l
-					mv chart/${HELM_CHART_TEMPLATE} chart/${COMPONENT_NAME}
-					ls -l chart
+				   ls -l
+				   mv chart/${HELM_CHART_TEMPLATE} chart/${COMPONENT_NAME}
+				   ls -l chart
 								
 				   sed -i "s/<HELM_CHART_NAME>/${helmChartName}/g" chart/${COMPONENT_NAME}/Chart.yaml
-				   sed -i "s/<IMAGE_NAMESPACE>/${imageNameSpace}/g" chart/${COMPONENT_NAME}/values.yaml
+				   sed -i "s/<IMAGE_NAMESPACE>/${imageNamespace}/g" chart/${COMPONENT_NAME}/values.yaml
 				   sed -i "s/<IMAGE_NAME>/${imageName}/g" chart/${COMPONENT_NAME}/values.yaml
 				   sed -i "s/<IMAGE_TAG>/${imageTag}/g" chart/${COMPONENT_NAME}/values.yaml
+				   sed -i "s/<CONFIGMAP_TRUSTSTORE>/${KUBE_CONFIGMAP_TRUSTSTORE}/g" chart/${COMPONENT_NAME}/values.yaml
+				   sed -i "s/<CONFIGMAP_APP_PROPERTIES>/${KUBE_CONFIGMAP_APP_PROPERTIES}/g" chart/${COMPONENT_NAME}/values.yaml
+				   sed -i "s/<SECRET_TRUSTSTORE>/${KUBE_SECRET_TRUSTSTORE}/g" chart/${COMPONENT_NAME}/values.yaml
 				   cat chart/${COMPONENT_NAME}/Chart.yaml
 				   cat chart/${COMPONENT_NAME}/values.yaml
 				   
 				   cp -r kube-deployment/${KUBE_DEPLOYMENT_TEMPLATE} .
-					mv ${KUBE_DEPLOYMENT_TEMPLATE} kube-artifacts
-					ls -l .
-					ls -l kube-artifacts
-					cat kube-artifacts/kube.deploy.yaml
+				   mv ${KUBE_DEPLOYMENT_TEMPLATE} kube-artifacts
+				   ls -l .
+				   ls -l kube-artifacts
+				   cat kube-artifacts/kube.deploy.yaml
 				   """
 				   
 				   if (DEPLOYMENT_METHOD == 'kube') {
@@ -153,7 +156,7 @@ def call(body) {
 					   echo 'User configured to deploy via helm. Not Supported ...'
 				   } else {
 					   echo 'default to UCD deployment'
-					   ucdDeploy(gitCommit, UCD_Env, true, APPLICATION_NAME, COMPONENT_NAME, DEPLOY_PROCESS)					   
+					   ucdDeploy(UCD_Env, true, APPLICATION_NAME, COMPONENT_NAME, DEPLOY_PROCESS)
 				   }
 				   echo "+++++ LIBRARY END +++++"
 			   }
