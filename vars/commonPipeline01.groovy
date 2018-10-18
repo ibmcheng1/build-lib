@@ -168,7 +168,11 @@ def call(body) {
                 echo "+++++ LIBRARY END +++++"
                 currentBuild.result = 'FAILED'
                 throw err
-            }
+            } finally {
+				notifyBuild(currentBuild.currentResult)
+			}
+			
+			
         }
     }
 }
