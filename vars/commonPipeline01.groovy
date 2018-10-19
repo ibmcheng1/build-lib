@@ -1,51 +1,49 @@
 def call(body) {
-
-    def config = [:]
-    body.resolveStrategy = Closure.DELEGATE_FIRST
-    body.delegate = config
-	body()
-
-	def COMMON_PIPELINE_01_VERSION = "10-16-2018"
-	def DEPLOYMENT_METHOD = config.deploymentMethod
-	def GIT_CREDENTIALS_ID = config.gitCredentialsId
-	def KUBE_CONFIGMAP_TRUSTSTORE = config.kube_configMapRef_truststore
-	def KUBE_CONFIGMAP_APP_PROPERTIES = config.kube_configMapRef_app_properties
-	def KUBE_SECRET_TRUSTSTORE = config.kube_secret_truststore
-	
-	def APPLICATION_NAME = config.applicationName
-	def COMPONENT_NAME = config.componentName
-	def DEPLOY_PROCESS = "Deploy-${COMPONENT_NAME}"
-	def UCD_Env = config.ucdEnv
-	def HELM_CHART_TEMPLATE = config.helmChartTemplate
-	def KUBE_DEPLOYMENT_TEMPLATE = config.kubeDeploymentTemplate
-	def kubeNamespace = config.kubeNamespaceForDeployment	
-	def kubeDeploymentName = COMPONENT_NAME	
-	def imageNamespace = kubeNamespace
-	def helmChartName = kubeDeploymentName
-	def containerName = kubeDeploymentName
-	def imageName = kubeDeploymentName
-	def imageTag
-	def gitCommit
-	def label = "${kubeDeploymentName}-${UUID.randomUUID().toString()}"
-	def volumes = [ hostPathVolume(hostPath: '/var/run/docker.sock', mountPath: '/var/run/docker.sock'), 
-				 	hostPathVolume(hostPath: '/tmp', mountPath: '/home/gradle/.gradle') ]			 	
-	volumes += secretVolume(secretName: 'jenkins-docker-sec', mountPath: '/jenkins_docker_sec')
-	podTemplate(label: label, slaveConnectTimeout: 600, runAsUser: 0, fsGroup: 0,
-	    containers: [
-	        containerTemplate(name: 'jnlp', image: 'jenkins/jnlp-slave:3.23-1', args: '${computer.jnlpmac} ${computer.name}'),
-	        containerTemplate(name: 'gradle', image: 'ibmcheng1/mygradle:4.10.1-jdk8', command: 'cat', ttyEnabled: true),
-	        containerTemplate(name: 'docker', image: 'docker:17.12', ttyEnabled: true, command: 'cat'),
-	        containerTemplate(name: 'kubectl', image: 'ibmcom/k8s-kubectl:v1.8.3', ttyEnabled: true, command: 'cat'),
-	    ],
-	    volumes: volumes
-	) {
-
-        node (label) {
-        
-            //Clean the workspace first to ensure happyness
-            deleteDir()
-
-            try {
+	{
+       node (label) {
+            try {				
+				//Clean the workspace first to ensure happyness
+				deleteDir()
+				def config = [:]
+				body.resolveStrategy = Closure.DELEGATE_FIRST
+				body.delegate = config
+				body()
+			
+				def COMMON_PIPELINE_01_VERSION = "10-16-2018"
+				def DEPLOYMENT_METHOD = config.deploymentMethod
+				def GIT_CREDENTIALS_ID = config.gitCredentialsId
+				def KUBE_CONFIGMAP_TRUSTSTORE = config.kube_configMapRef_truststore
+				def KUBE_CONFIGMAP_APP_PROPERTIES = config.kube_configMapRef_app_properties
+				def KUBE_SECRET_TRUSTSTORE = config.kube_secret_truststore
+				
+				def APPLICATION_NAME = config.applicationName
+				def COMPONENT_NAME = config.componentName
+				def DEPLOY_PROCESS = "Deploy-${COMPONENT_NAME}"
+				def UCD_Env = config.ucdEnv
+				def HELM_CHART_TEMPLATE = config.helmChartTemplate
+				def KUBE_DEPLOYMENT_TEMPLATE = config.kubeDeploymentTemplate
+				def kubeNamespace = config.kubeNamespaceForDeployment
+				def kubeDeploymentName = COMPONENT_NAME
+				def imageNamespace = kubeNamespace
+				def helmChartName = kubeDeploymentName
+				def containerName = kubeDeploymentName
+				def imageName = kubeDeploymentName
+				def imageTag
+				def gitCommit
+				def label = "${kubeDeploymentName}-${UUID.randomUUID().toString()}"
+				def volumes = [ hostPathVolume(hostPath: '/var/run/docker.sock', mountPath: '/var/run/docker.sock'),
+								 hostPathVolume(hostPath: '/tmp', mountPath: '/home/gradle/.gradle') ]
+				volumes += secretVolume(secretName: 'jenkins-docker-sec', mountPath: '/jenkins_docker_sec')
+				podTemplate(label: label, slaveConnectTimeout: 600, runAsUser: 0, fsGroup: 0,
+					containers: [
+						containerTemplate(name: 'jnlp', image: 'jenkins/jnlp-slave:3.23-1', args: '${computer.jnlpmac} ${computer.name}'),
+						containerTemplate(name: 'gradle', image: 'ibmcheng1/mygradle:4.10.1-jdk8', command: 'cat', ttyEnabled: true),
+						containerTemplate(name: 'docker', image: 'docker:17.12', ttyEnabled: true, command: 'cat'),
+						containerTemplate(name: 'kubectl', image: 'ibmcom/k8s-kubectl:v1.8.3', ttyEnabled: true, command: 'cat'),
+					],
+					volumes: volumes
+				)
+				
 			  echo "+++++ LIBRARY START +++++ CommonPipeline01: " + COMMON_PIPELINE_01_VERSION
 			  echo "APPLICATION_NAME=" + APPLICATION_NAME + ", COMPONENT_NAME=" + COMPONENT_NAME + ", DEPLOY_PROCESS=" + DEPLOY_PROCESS + ", UCD_Env=" + UCD_Env + ", HELM_CHART_TEMPLATE=" + HELM_CHART_TEMPLATE + ", KUBE_DEPLOYMENT_TEMPLATE=" + KUBE_DEPLOYMENT_TEMPLATE + ", kubeNamespace=" + kubeNamespace + ", DEPLOYMENT_METHOD=" + DEPLOYMENT_METHOD
 			  
@@ -66,6 +64,8 @@ def call(body) {
 		        	cp -rf ./* ../tmp/ 
 					ls -lat
 					ls -lat ../tmp/
+					ls -lat ../tmp/chart
+					ls -lat ../tmp/kube-deployment
 					"""
 			   }
 		   
