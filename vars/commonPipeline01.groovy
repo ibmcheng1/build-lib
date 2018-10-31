@@ -94,9 +94,11 @@ def call(body) {
 				   imageTag = "mycluster.icp:8500/${kubeNamespace}/${imageName}:${gitCommit}"
 				   echo "imageTag = ${imageTag}"
 				   sh """
+				   echo "WORKSPACE: ${WORKSPACE}"
 				   ln -s /jenkins_docker_sec/.dockercfg /home/jenkins/.dockercfg
 				   mkdir /home/jenkins/.docker
 				   ln -s /jenkins_docker_sec/.dockerconfigjson /home/jenkins/.docker/config.json
+				   ls -l
 				   docker build -t ${imageName} .
 				   docker tag ${imageName} $imageTag
 				   docker push $imageTag
