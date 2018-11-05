@@ -156,7 +156,7 @@ def call(body) {
 				   
 				   if (DEPLOYMENT_METHOD == 'kube') {
 					   echo 'User configured to deploy via Kubectl ...'
-					   kubeDeploy(fullImageTag, imageName, imageTag, kubeDeploymentName, kubeNamespace, containerName, KUBE_CONFIGMAP_TRUSTSTORE, KUBE_CONFIGMAP_APP_PROPERTIES, KUBE_SECRET_TRUSTSTORE, false)				 
+					   kubeDeploy(fullImageTag, imageNamespace, imageName, imageTag, kubeDeploymentName, kubeNamespace, containerName, KUBE_CONFIGMAP_TRUSTSTORE, KUBE_CONFIGMAP_APP_PROPERTIES, KUBE_SECRET_TRUSTSTORE, false)				 
 				   } else if (DEPLOYMENT_METHOD == 'helm') {
 					   echo 'User configured to deploy via helm. Not Supported ...'
 				   } else {

@@ -1,6 +1,6 @@
 import com.ibm.samples.jenkins.GlobalVars
 
-def call(String fullImageTag, String imageName, String imageTag, String kubeDeploymentName, String kubeNamespace, String containerName, String configMapTruststore, String configMapAppProperties, String kubeSecretTruststore, Boolean recycleDeployment) {
+def call(String fullImageTag, String imageNamespace, String imageName, String imageTag, String kubeDeploymentName, String kubeNamespace, String containerName, String configMapTruststore, String configMapAppProperties, String kubeSecretTruststore, Boolean recycleDeployment) {
 	echo "KubeDeploy ..."
 	try {
           container('kubectl') {
@@ -10,6 +10,7 @@ def call(String fullImageTag, String imageName, String imageTag, String kubeDepl
 			//imageTag = gitCommit
 			containerName = kubeDeploymentName
             echo "fullImageTag = ${fullImageTag}"
+			echo "imageNamespace = ${imageNamespace}"
 			echo "imageName = ${imageName}"
             echo "imageTag = ${imageTag}"
 			echo "kubeDeploymentName = ${kubeDeploymentName}"
