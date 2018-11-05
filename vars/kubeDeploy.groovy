@@ -32,6 +32,7 @@ def call(String fullImageTag, String imageName, String imageTag, String kubeDepl
                 sed -i "s/<KUBE_TOKEN_04>/${kubeDeploymentName}/g" kube-artifacts/kube.deploy.yaml
 				sed -i "s/<KUBE_DEPLOYMENT_NAME>/${kubeDeploymentName}/g" kube-artifacts/kube.deploy.yaml            
                 sed -i "s/<CONTAINER_NAME>/${containerName}/g" kube-artifacts/kube.deploy.yaml
+				sed -i "s/<IMAGE_NAMESPACE>/${imageNamespace}/g" kube-artifacts/kube.deploy.yaml
                 sed -i "s/<DOCKER_IMAGE>/${imageName}:${imageTag}/g" kube-artifacts/kube.deploy.yaml
                 sed -i "s/<CONFIGMAP_TRUSTSTORE>/${configMapTruststore}/g" kube-artifacts/kube.deploy.yaml            
                 sed -i "s/<CONFIGMAP_APP_PROPERTIES>/${configMapAppProperties}/g" kube-artifacts/kube.deploy.yaml
