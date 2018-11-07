@@ -10,6 +10,7 @@ def call(body) {
 	def GIT_CREDENTIALS_ID = config.gitCredentialsId
 	def KUBE_CONFIGMAP_TRUSTSTORE = config.kube_configMapRef_truststore
 	def KUBE_CONFIGMAP_APP_PROPERTIES = config.kube_configMapRef_app_properties
+	def KUBE_CONFIGMAP_KAFKA_PROPERTIES = config.kube_configMapRef_kafka_properties
 	def KUBE_SECRET_TRUSTSTORE = config.kube_secret_truststore
 	
 	def APPLICATION_NAME = config.applicationName
@@ -142,6 +143,7 @@ def call(body) {
 				   sed -i "s/<IMAGE_TAG>/${imageTag}/g" chart/${COMPONENT_NAME}/values.yaml
 				   sed -i "s/<CONFIGMAP_TRUSTSTORE>/${KUBE_CONFIGMAP_TRUSTSTORE}/g" chart/${COMPONENT_NAME}/values.yaml
 				   sed -i "s/<CONFIGMAP_APP_PROPERTIES>/${KUBE_CONFIGMAP_APP_PROPERTIES}/g" chart/${COMPONENT_NAME}/values.yaml
+				   sed -i "s/<CONFIGMAP_KAFKA_PROPERTIES>/${KUBE_CONFIGMAP_KAFKA_PROPERTIES}/g" chart/${COMPONENT_NAME}/values.yaml
 				   sed -i "s/<SECRET_TRUSTSTORE>/${KUBE_SECRET_TRUSTSTORE}/g" chart/${COMPONENT_NAME}/values.yaml
 				   cat chart/${COMPONENT_NAME}/Chart.yaml
 				   echo ""
@@ -156,7 +158,7 @@ def call(body) {
 				   
 				   if (DEPLOYMENT_METHOD == 'kube') {
 					   echo 'User configured to deploy via Kubectl ...'
-					   kubeDeploy(fullImageTag, imageNamespace, imageName, imageTag, kubeDeploymentName, kubeNamespace, containerName, KUBE_CONFIGMAP_TRUSTSTORE, KUBE_CONFIGMAP_APP_PROPERTIES, KUBE_SECRET_TRUSTSTORE, false)				 
+					   kubeDeploy(fullImageTag, imageNamespace, imageName, imageTag, kubeDeploymentName, kubeNamespace, containerName, KUBE_CONFIGMAP_TRUSTSTORE, KUBE_CONFIGMAP_APP_PROPERTIES, KUBE_CONFIGMAP_KAFKA_PROPERTIES, KUBE_SECRET_TRUSTSTORE, false)				 
 				   } else if (DEPLOYMENT_METHOD == 'helm') {
 					   echo 'User configured to deploy via helm. Not Supported ...'
 				   } else {
